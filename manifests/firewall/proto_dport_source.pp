@@ -21,7 +21,7 @@ define rhel::firewall::proto_dport_source (
     $provider = 'iptables'
   }
 
-  firewall { "${prefix} ${proto}/${dport} from ${source}":
+  firewall { "${prefix} ${proto}/${dport} from ${source} Rule":
     ensure   => $ensure,
     action   => $action,
     chain    => $chain,
@@ -30,6 +30,16 @@ define rhel::firewall::proto_dport_source (
     source   => $source,
     provider => $provider,
   }
+  firewall { "${prefix} ${proto}/${dport} from ${source} LOG":
+    ensure   => $ensure,
+    jump     => 'LOG',
+    chain    => $chain,
+    dport    => $final_dport,
+    proto    => $proto,
+    source   => $source,
+    provider => $provider,
+  }
+  
 
 }
 

@@ -6,23 +6,54 @@ class rhel::firewall::post (
   $ipv4_reject_with,
   $ipv6_action,
   $ipv6_reject_with,
+  $ipv4_chain_action,
+  $ipv6_chain_action,
+  $log_rejects,
 ) {
 
   # Break dependency cycle
   Firewall { before => undef }
 
+  if $log_rejects {
+    firewall { '996 log rejects':
+      jump   => 'LOG',
+      chain  => 'INPUT',
+      proto  => 'all',
+      log_prefix => 'iptables IN rejected: ',
+      log_level  => '7'
+    }
+    firewall { '997 log rejects':
+      jump   => 'LOG',
+      chain  => 'FORWARD',
+      proto  => 'all',
+      log_prefix => 'iptables FORWARD rejected: ',
+      log_level  => '7'
+    }
+  }
   if $ipv4_action == 'reject' { $ipv4_reject = $ipv4_reject_with }
   firewall { '998 last input':
     action => $ipv4_action,
     chain  => 'INPUT',
     proto  => 'all',
     reject => $ipv4_reject,
+    before => undef,
   }
   firewall { '999 last forward':
     action => $ipv4_action,
     chain  => 'FORWARD',
     proto  => 'all',
     reject => $ipv4_reject,
+    before => undef,
+  }
+  firewallchain { 'INPUT:filter:IPv4':
+    ensure => 'present',
+    policy => $ipv4_chain_action,
+    before => undef,
+  }
+  firewallchain { 'FORWARD:filter:IPv4':
+    ensure => 'present',
+    policy => $ipv4_chain_action,
+    before => undef,
   }
 
   if $ipv6 {
@@ -40,6 +71,16 @@ class rhel::firewall::post (
       proto    => 'all',
       provider => 'ip6tables',
       reject   => $ipv6_reject,
+    }
+    firewallchain { 'INPUT:filter:IPv6':
+      ensure => 'present',
+      policy => $ipv6_chain_action,
+      before => undef,
+    }
+    firewallchain { 'FORWARD:filter:IPv6':
+      ensure => 'present',
+      policy => $ipv6_chain_action,
+      before => undef,
     }
   }
 

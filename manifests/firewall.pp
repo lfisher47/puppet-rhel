@@ -1,15 +1,18 @@
 # Class: rhel::firewall
 #
 class rhel::firewall (
-  $ipv6             = true,
-  $icmp_limit       = false,
-  $src_ssh          = [],
-  $src_nrpe         = [],
-  $ipv4_action      = 'reject',
-  $ipv4_reject_with = 'icmp-port-unreachable',
-  $ipv6_action      = 'reject',
-  $ipv6_reject_with = 'icmp6-port-unreachable',
-  $portknock        = {},
+  $ipv6              = true,
+  $icmp_limit        = false,
+  $src_ssh           = [],
+  $src_nrpe          = [],
+  $ipv4_action       = 'reject',
+  $ipv4_reject_with  = 'icmp-port-unreachable',
+  $ipv6_action       = 'reject',
+  $ipv6_reject_with  = 'icmp6-port-unreachable',
+  $portknock         = {},
+  $ipv4_chain_action = 'drop',
+  $ipv6_chain_action = 'drop',
+  $log_rejects       = true,
 ) {
 
   class { '::firewall': }
@@ -41,11 +44,14 @@ class rhel::firewall (
   }
 
   class { '::rhel::firewall::post':
-    ipv6             => $ipv6,
-    ipv4_action      => $ipv4_action,
-    ipv4_reject_with => $ipv4_reject_with,
-    ipv6_action      => $ipv6_action,
-    ipv6_reject_with => $ipv6_reject_with,
+    ipv6              => $ipv6,
+    ipv4_action       => $ipv4_action,
+    ipv4_reject_with  => $ipv4_reject_with,
+    ipv6_action       => $ipv6_action,
+    ipv6_reject_with  => $ipv6_reject_with,
+    ipv4_chain_action => $ipv4_chain_action,
+    ipv6_chain_action => $ipv4_chain_action,
+    log_rejects       => $log_rejects,
   }
 
   # Optional portknock resources to be created
