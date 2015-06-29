@@ -92,6 +92,27 @@ Masquerade class, one liner to enable masquerading of all 3 RFC1918 networks :
 class { '::rhel::firewall::masquerade': outiface => 'br0' }
 ```
 
+NOTRACK definition, to disable connection tracking for certain ports :
+
+```
+rhel::firewall::notrack { '100 notrack http': iface => 'eth0', port => '80' }
+rhel::firewall::notrack { '110 notrack lo': iface => 'lo' }
+```
+
+For rules source matching private IP address space, the
+`rhel::firewall::privatesrc` definition will automatically create the 3
+required IPv4 rules and the required IPv6 rule (if not disabled) :
+
+```
+rhel::firewall::privatesrc { '100 rsync':
+  rules => {
+    action => 'accept',
+    proto  => 'tcp',
+    dport  => [ '873' ],
+  },
+}
+```
+
 ### Virtual
 
 This is a class which can be safely included on all nodes, and will tweak only
@@ -111,14 +132,14 @@ Simple shell script and cron job to automatically run `yum update` at 10:05 on
 weekdays (+ a 3-10min wait time to avoid mass parallel downloads) :
 
 ```puppet
-include '::rhel::yum-cron'
+include '::rhel::yum_cron'
 ```
 
 Many parameters can be changed. Example to have a weekly run on Monday at 6AM
 completely silent (no cron output email sent out) :
 
 ```puppet
-class { '::rhel::yum-cron':
+class { '::rhel::yum_cron':
   cron_command => '/usr/local/sbin/yum-cron &>/dev/null',
   cron_hour    => '06',
   cron_minute  => '00',
@@ -153,5 +174,17 @@ include '::rhel::epel'
 To remove it :
 ```puppet
 class { '::rhel::epel': ensure => absent }
+```
+
+### Systemd
+
+Manage systemd resources (initially services). The common `rhel::systemd` class
+is automatically included and will execute `systemctl daemon-reload` when
+required. Example :
+
+```puppet
+rhel::systemd::service { 'mydaemon':
+  source => "puppet:///modules/${module_name}/mydaemon.service",
+}
 ```
 
