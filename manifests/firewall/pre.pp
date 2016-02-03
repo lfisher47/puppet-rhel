@@ -26,7 +26,7 @@ class rhel::firewall::pre (
       chain      => 'INPUT',
       proto      => 'all',
       state      => [ 'RELATED', 'ESTABLISHED' ],
-      log_prefix => 'iptables INPUT ACCEPT RELATED ESTABLISHED: ',
+      log_prefix => 'INPUT ACCEPT RELATED ESTAB: ',
       log_level  => '7',
     },
   }
@@ -45,7 +45,7 @@ class rhel::firewall::pre (
       chain      => 'INPUT',
       icmp       => 'timestamp-request',
       proto      => 'icmp',
-      log_prefix => 'iptables INPUT DROP icmp timestamp-request',
+      log_prefix => 'INPUT DROP icmp timestamp-request',
       log_level  => '7'
     }
     firewall { '003 icmp limit rate RULE':
@@ -60,7 +60,7 @@ class rhel::firewall::pre (
       chain      => 'INPUT',
       limit      => "${icmp_limit}/sec",
       proto      => 'icmp',
-      log_prefix => 'iptables INPUT icmp limit rate',
+      log_prefix => 'INPUT icmp limit rate',
       log_level  => '7'
     }
     firewall { '004 icmp drop RULE':
@@ -73,7 +73,7 @@ class rhel::firewall::pre (
       jump       => 'LOG',
       chain      => 'INPUT',
       proto      => 'icmp',
-      log_prefix => 'iptables INPUT DROP icmp',
+      log_prefix => 'INPUT DROP icmp',
       log_level  => '7'
     }
     if $ipv6 {
@@ -102,7 +102,7 @@ class rhel::firewall::pre (
       jump       => 'LOG',
       chain      => 'INPUT',
       proto      => 'icmp',
-      log_prefix => 'iptables INPUT ACCEPT icmp',
+      log_prefix => 'INPUT ACCEPT icmp',
       log_level  => '7'
     }
     if $ipv6 {
@@ -132,7 +132,7 @@ class rhel::firewall::pre (
       chain      => 'INPUT',
       proto      => 'all',
       iniface    => 'lo',
-      log_prefix => 'iptables INPUT ACCEPT LO: ',
+      log_prefix => 'INPUT ACCEPT LO: ',
       log_level  => '7',
     },
   }

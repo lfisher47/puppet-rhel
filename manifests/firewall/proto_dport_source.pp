@@ -38,7 +38,7 @@ define rhel::firewall::proto_dport_source (
     proto    => $proto,
     source   => $source,
     provider => $provider,
-    log_prefix => "iptables $chain $action $prefix: ",
+    log_prefix => "$chain $action $dport: ",
     log_level  => '7'
   }
   

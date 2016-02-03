@@ -19,14 +19,14 @@ class rhel::firewall::post (
       jump   => 'LOG',
       chain  => 'INPUT',
       proto  => 'all',
-      log_prefix => 'iptables INPUT DROP: ',
+      log_prefix => 'INPUT DROP: ',
       log_level  => '7'
     }
     firewall { '997 log rejects':
       jump   => 'LOG',
       chain  => 'FORWARD',
       proto  => 'all',
-      log_prefix => 'iptables FORWARD DROP: ',
+      log_prefix => 'FORWARD DROP: ',
       log_level  => '7'
     }
   }
