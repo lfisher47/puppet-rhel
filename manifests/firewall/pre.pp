@@ -17,6 +17,18 @@ class rhel::firewall::pre (
       state  => [ 'RELATED', 'ESTABLISHED' ],
     },
   }
+  rhel::firewall::dualstack { "001 state related accept LOG":
+    ipv6  => $ipv6,
+    rules => {
+      ensure     => 'present',
+      jump       => 'LOG',
+      chain      => 'INPUT',
+      proto      => 'all',
+      state      => [ 'RELATED' ],
+      log_prefix => 'INPUT RELATED: ',
+      log_level  => '7',
+    },
+  }
 
   # Different protocols, icmp vs. ipv6-icmp
   if $icmp_limit != false {
