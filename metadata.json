@@ -1,12 +1,12 @@
 {
-  "name": "thias-rhel",
+  "name": "lfisher47-rhel",
   "version": "1.0.11",
   "author": "Matthias Saou",
   "license": "Apache-2.0",
   "summary": "Configure Red Hat Enterprise Linux specific files and services.",
-  "source": "git://github.com/thias/puppet-rhel",
-  "project_page": "https://github.com/thias/puppet-rhel",
-  "issues_url": "https://github.com/thias/puppet-rhel/issues",
+  "source": "git://github.com/lfisher47/puppet-rhel",
+  "project_page": "https://github.com/lfisher47/puppet-rhel",
+  "issues_url": "https://github.com/lfisher47/puppet-rhel/issues",
   "description": "Configure Red Hat Enterprise Linux specific files and services.",
   "tags": ["firewall", "iptables", "ip6tables", "epel", "yum", "rpm"],
   "operatingsystem_support": [
