@@ -30,21 +30,37 @@ class rhel::firewall::post (
       log_level  => '7'
     }
   }
-  if $ipv4_action == 'reject' { $ipv4_reject = $ipv4_reject_with }
-  firewall { '998 last input':
-    action => $ipv4_action,
-    chain  => 'INPUT',
-    proto  => 'all',
-    reject => $ipv4_reject,
-    before => undef,
+  if $ipv4_action == 'reject' { 
+    firewall { '998 last input':
+      action => $ipv4_action,
+      chain  => 'INPUT',
+      proto  => 'all',
+      reject => $ipv4_reject_with,
+      before => undef,
+    }
+    firewall { '999 last forward':
+      action => $ipv4_action,
+      chain  => 'FORWARD',
+      proto  => 'all',
+      reject => $ipv4_reject_with,
+      before => undef,
+    }
   }
-  firewall { '999 last forward':
-    action => $ipv4_action,
-    chain  => 'FORWARD',
-    proto  => 'all',
-    reject => $ipv4_reject,
-    before => undef,
+  else {
+    firewall { '998 last input':
+      action => $ipv4_action,
+      chain  => 'INPUT',
+      proto  => 'all',
+      before => undef,
+    }
+    firewall { '999 last forward':
+      action => $ipv4_action,
+      chain  => 'FORWARD',
+      proto  => 'all',
+      before => undef,
+    }
   }
+
   firewallchain { 'INPUT:filter:IPv4':
     ensure => 'present',
     policy => $ipv4_chain_action,

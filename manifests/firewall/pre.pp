@@ -40,7 +40,7 @@ class rhel::firewall::pre (
       proto  => 'icmp',
     }
     firewall { '002 icmp drop timestamp-request LOG':
-      ensure     => $ensure,
+      ensure     => 'present',
       jump       => 'LOG',
       chain      => 'INPUT',
       icmp       => 'timestamp-request',
@@ -55,7 +55,7 @@ class rhel::firewall::pre (
       proto  => 'icmp',
     }
     firewall { '003 icmp limit rate LOG':
-      ensure     => $ensure,
+      ensure     => 'present',
       jump       => 'LOG',
       chain      => 'INPUT',
       limit      => "${icmp_limit}/sec",
@@ -69,7 +69,7 @@ class rhel::firewall::pre (
       proto  => 'icmp',
     }
     firewall { '004 icmp drop LOG':
-      ensure     => $ensure,
+      ensure     => 'present',
       jump       => 'LOG',
       chain      => 'INPUT',
       proto      => 'icmp',
@@ -98,7 +98,7 @@ class rhel::firewall::pre (
       proto  => 'icmp',
     }
     firewall { '003 icmp accept LOG':
-      ensure     => $ensure,
+      ensure     => 'present',
       jump       => 'LOG',
       chain      => 'INPUT',
       proto      => 'icmp',

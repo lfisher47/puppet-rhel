@@ -1,6 +1,6 @@
 {
   "name": "lfisher47-rhel",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "author": "Matthias Saou",
   "license": "Apache-2.0",
   "summary": "Configure Red Hat Enterprise Linux specific files and services.",
